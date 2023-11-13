@@ -8,7 +8,6 @@ const connection = mysql.createConnection(dbConfig);
 exports.insert = ( data, cb ) => {
     console.log(data);
     let SIGN_UP_TIME = new Date();
-
     var sql = `INSERT INTO user (LOGIN_ID,PASSWORD,USER_NAME,PHONE_NUMBER,EMAIL,CATEGORY,DEPERTMENT,APPROVAL,SIGN_UP_TIME) VALUES (
                             '${data.LOGIN_ID}','${data.PASSWORD}',
                          '${data.USER_NAME}','${data.PHONE_NUMBER}','${data.EMAIL}','${data.CATEGORY}'
