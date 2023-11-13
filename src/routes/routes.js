@@ -10,7 +10,7 @@ router.get("/signin", user.signin);
 router.post("/signin", user.post_login);
 
 router.get("/signup",user.signup);
-router.post("/siginup",user.post_user);
+router.post("/signup",user.post_user);
 
 router.get("/index",user.index);
 router.post("/index",user.index);

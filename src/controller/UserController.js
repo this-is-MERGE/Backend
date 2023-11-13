@@ -1,6 +1,7 @@
 const User = require("../model/User");
 
 
+
 exports.startpage = (req,res) =>{
     if(!req.session.user)
         return res.render("signin.html");
@@ -16,9 +17,8 @@ exports.signup = (req, res) => {
 
 //User 정보 저장하기
 exports.post_user = (req, res) => {
-    User.select(req.body.LOGIN_ID,req.body.PASSWORD,
-        req.body.USER_NAME,req.body.EMAIL,req.body.CATEGORY
-        ,req.body.DEPARTMENT,req.body.SIGN_UP_TIME, function (result) {
+    console.log(req.body);
+    User.select(req.body.LOGIN_ID,req.body.PASSWORD, function (result) {
         if (result == null) {
             User.insert( req.body, function (result) {
                 return res.send({result: result, flag: true});
@@ -51,9 +51,8 @@ exports.logout = (req,res)=>{
 
 //login 시도
 exports.post_login = (req, res) => {
-    console.log(req.body.LOGIN_ID, req.body.PASSWORD);
+    console.log(req.body);
     User.select( req.body.LOGIN_ID, req.body.PASSWORD, function (result) {
-        console.log(result);
         if (result == null) {
             return res.send({result: result, flag: false});
         } else{
