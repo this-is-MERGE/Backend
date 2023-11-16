@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require("express");
 const session = require("express-session");
 
@@ -23,7 +22,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser())
 
-const PORT = process.env.PORT
+const PORT = dbConfig.PORT
 app.use(express.static(path.join(__dirname, '/')));
 app.engine('html', require('ejs').renderFile);
 app.use( express.static( "uploads" ));
