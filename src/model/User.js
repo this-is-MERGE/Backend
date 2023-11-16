@@ -50,7 +50,7 @@ exports.search_all_patient = (cb) => {
                       p.USER_ID, 
                       u.USER_NAME,
                       DATE_FORMAT(p.LAST_TREATMENT_DATE, '%Y-%m-%d') AS LAST_TREATMENT_DATE,
-                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d') AS RESERVATION_DATE
+                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i') AS RESERVATION_DATE
                       FROM patient p JOIN user u ON p.USER_ID = u.USER_ID;`;
     connection.query( sql, function(err, rows){
         if ( err ) throw err;
@@ -69,7 +69,7 @@ exports.search_patient = (Search_Option, Search_Keyword, cb) => {
                       p.USER_ID,
                       u.USER_NAME,
                       DATE_FORMAT(p.LAST_TREATMENT_DATE, '%Y-%m-%d') AS LAST_TREATMENT_DATE,
-                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d')  AS RESERVATION_DATE 
+                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i')  AS RESERVATION_DATE 
                       FROM patient p 
                       JOIN user u ON p.USER_ID = u.USER_ID WHERE p.${Search_Option} LIKE '%${Search_Keyword}%';`;
     connection.query( sql, function(err, rows){
@@ -78,4 +78,13 @@ exports.search_patient = (Search_Option, Search_Keyword, cb) => {
     });
 }
 
-
+exports.delete_patient =(NAME, RESIDENT_REGISTARTION_NUMBER, cb) => {
+    let sql = `DELETE FROM patient WHERE RESIDENT_REGISTARTION_NUMBER = '${RESIDENT_REGISTARTION_NUMBER}';`;
+    connection.query( sql, function(err, rows){
+        if ( err ){
+            console.error("환자 삭제 중 에러 발생:", err);
+        return cb({ error: "환자 삭제 중 에러 발생" });
+        }
+        cb(rows);
+    });
+}

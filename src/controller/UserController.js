@@ -73,11 +73,11 @@ exports.post_login = (req, res) => {
                     req.session.save(() => { // 세션 객체에 저장할 수 있는 express-session 메소드.
                         console.log(req.session);
                     })
-                    return res.send({result: result, flag: true});
+                    return res.send({result: result, flag: true, approval: true });
                 }
                 //추후 res.reder로 변경 해야함 임시 방편?? 이부분 고민해봐야함
                 else{
-                    return res.send({result: result, flag: true});
+                    return res.send({result: result, flag: true ,approval: false});
                 }
             }
         }
@@ -91,22 +91,39 @@ exports.search_all_patient = (req,res) =>{
     })
 }
 //환자 데이터 검색 후 특정값 콜백 // 정렬 아직 안됨
-exports.search_patient = (req,res) =>{
-    //Search_Option 분류(항목,주민등록번호 등..) Search_Keyword 검색어(1, 01121,,,등)
-    User.search_patient(req.body.Search_Option, req.body.Search_Keyword,function (result){
-        if (result.length ===0) {
-            //결과값과 flag 리턴
-            return res.send({result: result, flag: false});
+exports.patient_page = (req,res) =>{
+    const action = req.body.button;
+    switch (action) {
+        case 'search_patient':
+            //Search_Option 분류(항목,주민등록번호 등..) Search_Keyword 검색어(1, 01121,,,등)
+            User.search_patient(req.body.Search_Option, req.body.Search_Keyword,function (result){
+                if (result.length ===0) {
+                    //결과값과 flag 리턴
+                    return res.send({result: result, flag: false});
+                }
+                else {
+                    console.log(result);
+                    return res.send({result: result, flag: true});
+                }
+            })
+            break;
+        case 'delete_patient':
+            //NAME: 환자이름, RESIDENT_REGISTARTION_NUMBER: 환자 주민등록번호
+            User.delete_patient(req.body.NAME,req.body.RESIDENT_REGISTARTION_NUMBER, function (){
+                //삭제후  result값 반환
+                User.search_all_patient(function (result){
+                    return res.send({result: result});
+                })
+        })
+            break;
         }
-        else {
-            console.log(result);
-            return res.send({result: result, flag: true});
-        }
-    })
 }
+
+
 //회원정보 수정 화면(개발 아직 안됨)
 exports.edit = (req, res) => {
     User.get_user( req.body.id, function (result) {
         res.render("edit", {data: result[0]});
     });
 }
+
