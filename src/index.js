@@ -7,6 +7,9 @@ const FileStore = require("session-file-store")(session);
 const dbConfig = require("../config/database.js");
 
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 app.use(
     session({
         secret: '@codestates',
