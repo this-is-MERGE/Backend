@@ -20,7 +20,7 @@ exports.already_login = (req,res,next) =>{
 
 
 exports.startpage = (req,res) =>{
-    res.render("첫 페이지");
+    res.render("초기화면");
 }
 //메인화면=회원가입화면
 exports.signup = (req, res) => {
@@ -92,4 +92,5 @@ exports.edit = (req, res) => {
         res.render("edit", {data: result[0]});
     });
 }
+
 
