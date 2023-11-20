@@ -26,14 +26,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser())
 
-const PORT = dbConfig.PORT;
+const PORT = dbConfig.PORT
 app.use(express.static(path.join(__dirname, '/')));
 app.engine('html', require('ejs').renderFile);
 app.use( express.static( "uploads" ));
 app.use(express.urlencoded({extended: true}));
 app.use( bodyParser.json() );
 const router = require("./routes/routes.js");
-const {logout} = require("./controller/UserController");
 app.use("/", router);
 app.listen(PORT, () => {
     console.log( 'Server Port: ',PORT);
