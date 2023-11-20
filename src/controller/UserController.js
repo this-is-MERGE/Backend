@@ -1,17 +1,17 @@
 const User = require("../model/User");
 const Console = require("console");
-
+exports.sessioncheck = (req,res,next) =>{
+    if(!req.session.user)
+        return res.render("초기화면");
+    else {
+        console.log(req.session);
+        next();
+    }
+}
 
 
 exports.startpage = (req,res) =>{
-    if(!req.session.user)
-        return res.render("초기화면");
-    else{
-        //세션이 있는가?
-        console.log(req.session.user);
-        //있다면
-        return res.render("환자목록페이지");
-    }
+    res.render("환자목록페이지");
 }
 //메인화면=회원가입화면
 exports.signup = (req, res) => {

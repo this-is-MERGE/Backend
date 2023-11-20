@@ -7,6 +7,9 @@ const FileStore = require("session-file-store")(session);
 const dbConfig = require("../config/database.js");
 
 const app = express();
+const cors = require('cors');
+
+app.use(cors());
 app.use(
     session({
         secret: '@codestates',
@@ -23,12 +26,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser())
 
-const PORT = process.env.PORT
+const PORT = dbConfig.PORT;
 app.use(express.static(path.join(__dirname, '/')));
 app.engine('html', require('ejs').renderFile);
 app.use( express.static( "uploads" ));
 app.use(express.urlencoded({extended: true}));
-app.use( bodyParser.json() )
+app.use( bodyParser.json() );
 const router = require("./routes/routes.js");
 const {logout} = require("./controller/UserController");
 app.use("/", router);
