@@ -1,3 +1,4 @@
+
 const express = require("express");
 const session = require("express-session");
 
@@ -30,7 +31,7 @@ app.use(express.static(path.join(__dirname, '/')));
 app.engine('html', require('ejs').renderFile);
 app.use( express.static( "uploads" ));
 app.use(express.urlencoded({extended: true}));
-app.use( bodyParser.json() )
+app.use( bodyParser.json() );
 const router = require("./routes/routes.js");
 app.use("/", router);
 app.listen(PORT, () => {

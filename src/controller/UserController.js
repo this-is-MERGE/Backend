@@ -1,6 +1,6 @@
 const User = require("../model/User");
 const Console = require("console");
-exports.session_check = (req,res,next) =>{
+exports.sessioncheck = (req,res,next) =>{
     if(!req.session.user)
         return res.render("초기화면");
     else {
@@ -97,4 +97,3 @@ exports.edit = (req, res) => {
         res.render("edit", {data: result[0]});
     });
 }
-
