@@ -14,6 +14,5 @@ router.post("/signup",user.sessioncheck,user.post_user);
 //환자 전체 조회 창
 router.get("/patient",user.search_all_patient);
 //환자 검색
-router.post("/patient",user.sessioncheck,user.patient_page);
 router.get("/logout",user.sessioncheck,user.logout);
 module.exports = router;
