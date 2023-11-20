@@ -32,7 +32,6 @@ app.use( express.static( "uploads" ));
 app.use(express.urlencoded({extended: true}));
 app.use( bodyParser.json() )
 const router = require("./routes/routes.js");
-const {logout} = require("./controller/UserController");
 app.use("/", router);
 app.listen(PORT, () => {
     console.log( 'Server Port: ',PORT);

@@ -1,17 +1,24 @@
 const User = require("../model/User");
 const Console = require("console");
-
-
-
-exports.startpage = (req,res) =>{
+exports.session_check = (req,res,next) =>{
     if(!req.session.user)
         return res.render("초기화면");
-    else{
-        //세션이 있는가?
-        console.log(req.session.user);
-        //있다면
-        return res.render("환자목록페이지");
+    else {
+        console.log(req.session);
+        next();
     }
+}
+exports.already_login = (req,res,next) =>{
+    if(!req.session.user){
+        next();
+        }
+    else {
+        console.log("already_login");
+        return res.render("환자페이지");
+    }
+}
+exports.startpage = (req,res) =>{
+    res.render("초기화면");
 }
 //메인화면=회원가입화면
 exports.signup = (req, res) => {
@@ -83,42 +90,6 @@ exports.post_login = (req, res) => {
         }
     });
 }
-//환자 데이터 콜백 및 search_all_patient 화면 랜더링
-exports.search_all_patient = (req,res) =>{
-    User.search_all_patient(function (result){
-        //render로 바꿀 예정
-        return res.send({result: result});
-    })
-}
-//환자 데이터 검색 후 특정값 콜백 // 정렬 아직 안됨
-exports.patient_page = (req,res) =>{
-    const action = req.body.button;
-    switch (action) {
-        case 'search_patient':
-            //Search_Option 분류(항목,주민등록번호 등..) Search_Keyword 검색어(1, 01121,,,등)
-            User.search_patient(req.body.Search_Option, req.body.Search_Keyword,function (result){
-                if (result.length ===0) {
-                    //결과값과 flag 리턴
-                    return res.send({result: result, flag: false});
-                }
-                else {
-                    console.log(result);
-                    return res.send({result: result, flag: true});
-                }
-            })
-            break;
-        case 'delete_patient':
-            //NAME: 환자이름, RESIDENT_REGISTARTION_NUMBER: 환자 주민등록번호
-            User.delete_patient(req.body.NAME,req.body.RESIDENT_REGISTARTION_NUMBER, function (){
-                //삭제후  result값 반환
-                User.search_all_patient(function (result){
-                    return res.send({result: result});
-                })
-        })
-            break;
-        }
-}
-
 
 //회원정보 수정 화면(개발 아직 안됨)
 exports.edit = (req, res) => {
