@@ -16,5 +16,6 @@ router.post("/signup",user.already_login,user.post_user);
 router.get("/patient",user.session_check,patient.search_all_patient);
 //환자 검색
 router.post("/patient",user.session_check,patient.patient_page);
+//환자 추가
 router.get("/logout",user.session_check, user.logout);
 module.exports = router;

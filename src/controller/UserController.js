@@ -2,7 +2,7 @@ const User = require("../model/User");
 const Console = require("console");
 exports.session_check = (req,res,next) =>{
     if(!req.session.user)
-        return res.render("초기화면");
+        res.redirect('/');
     else {
         console.log(req.session);
         next();
@@ -14,13 +14,13 @@ exports.already_login = (req,res,next) =>{
         }
     else {
         console.log("already_login");
-        return res.render("환자페이지");
+        res.redirect('/patient');
     }
 }
 
 
 exports.startpage = (req,res) =>{
-    res.render("환자목록페이지");
+    res.render("첫 페이지");
 }
 //메인화면=회원가입화면
 exports.signup = (req, res) => {
@@ -46,14 +46,7 @@ exports.post_user = (req, res) => {
 
 //login 화면
 exports.signin = (req, res) => {
-    if(!req.session.user)//세션이 있는가?
-        //없다면
-        return res.render("로그인화면");
-    else{
-        console.log(req.session.user);
-        //있다면
-        return res.render("환자목록페이지");
-    }
+    return res.render("로그인화면");
 }
 
 //로그아웃 및 세션 파괴
