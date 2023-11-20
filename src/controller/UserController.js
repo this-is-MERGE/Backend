@@ -1,6 +1,6 @@
 const User = require("../model/User");
 const Console = require("console");
-exports.sessioncheck = (req,res,next) =>{
+exports.session_check = (req,res,next) =>{
     if(!req.session.user)
         return res.render("초기화면");
     else {
