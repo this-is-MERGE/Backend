@@ -45,7 +45,6 @@ exports.search_patient = (Search_Option, Search_Keyword, cb) => {
         cb(rows);
     });
 }
-
 exports.delete_patient =(NAME, RESIDENT_REGISTRATION_NUMBER, cb) => {
     let sql = `DELETE FROM patient WHERE RESIDENT_REGISTRATION_NUMBER = ${RESIDENT_REGISTRATION_NUMBER};`;
     connection.query( sql, function(err, rows){

@@ -14,11 +14,6 @@ exports.patient_page = (req,res) =>{
             //Search_Option 분류(항목,주민등록번호 등..) Search_Keyword 검색어(1, 01121,,,등)
             Patient.search_patient(req.body.Search_Option, req.body.Search_Keyword,function (result){
                 if (result.length ===0) {
-                    console.log({result: result, flag: false});
-                    return res.send({result: result, flag: false});
-                }
-                else {
-                    console.log(result);
                     console.log("환자 검색 성공");
                     return res.redirect("/patient");
                 }
@@ -50,6 +45,7 @@ exports.patient_page = (req,res) =>{
                     console.log("환자 수정 성공");
                         //추가후 변경된 모든 환자 데이터 반환
                     return res.redirect("/patient");
-                })
+            })
+            break;
     }
 }
