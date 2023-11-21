@@ -2,7 +2,7 @@ const User = require("../model/User");
 const Console = require("console");
 exports.session_check = (req,res,next) =>{
     if(!req.session.user)
-        res.redirect('/');
+        return res.redirect("/patient");
     else {
         console.log(req.session);
         next();
@@ -14,7 +14,7 @@ exports.already_login = (req,res,next) =>{
         }
     else {
         console.log("already_login");
-        res.redirect('/patient');
+        return res.redirect('/patient');
     }
 }
 
