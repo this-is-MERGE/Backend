@@ -14,11 +14,6 @@ exports.patient_page = (req,res) =>{
             //Search_Option 분류(항목,주민등록번호 등..) Search_Keyword 검색어(1, 01121,,,등)
             Patient.search_patient(req.body.Search_Option, req.body.Search_Keyword,function (result){
                 if (result.length ===0) {
-                    console.log({result: result, flag: false});
-                    return res.send({result: result, flag: false});
-                }
-                else {
-                    console.log(result);
                     console.log("환자 검색 성공");
                     return res.redirect("/patient");
                 }
@@ -37,19 +32,20 @@ exports.patient_page = (req,res) =>{
             //환자의 성별, 나이, 주소, 휴대폰번호, 주민등록번호, 특이사항, 이름를 입력받는다.
             Patient.add_patient(req.body.GENDER, req.body.AGE,req.body.ADDRESS,req.body.PHONE_NUMBER,req.body.RESIDENT_REGISTRATION_NUMBER
                 ,req.body.SPECIAL_NOTE,req.body.NAME,req.body.USER_NAME, req.body.DEPARTMENT,function (result){
-                console.log(result);
-                console.log("환자 추가 성공");
-                //추가후 변경된 모든 환자 데이터 "/patient"로 redirect
+                    console.log(result);
+                    console.log("환자 추가 성공");
+                    //추가후 변경된 모든 환자 데이터 "/patient"로 redirect
                     return res.redirect("/patient");
-            })
+                })
             break;
         case 'modified_patient':
             Patient.modified_patient(req.body.GENDER, req.body.AGE,req.body.ADDRESS,req.body.PHONE_NUMBER,req.body.RESIDENT_REGISTRATION_NUMBER
                 ,req.body.SPECIAL_NOTE,req.body.NAME,req.body.USER_NAME, req.body.DEPARTMENT,function (result) {
                     console.log(result);
                     console.log("환자 수정 성공");
-                        //추가후 변경된 모든 환자 데이터 반환
+                    //추가후 변경된 모든 환자 데이터 반환
                     return res.redirect("/patient");
                 })
+            break;
     }
 }

@@ -6,23 +6,30 @@ const connection = mysql.createConnection(dbConfig);
 
 //전체 환자 목록 조회 데이터 콜백
 exports.search_all_patient = (cb) => {
-    let sql = `SELECT p.PATIENT_ID,
-                      p.GENDER, 
-                      p.AGE, 
-                      p.ADDRESS, 
+    let Patient_Query = `SELECT p.PATIENT_ID,
+                      p.GENDER,
+                      p.AGE,
+                      p.ADDRESS,
                       p.PHONE_NUMBER,
-                      p.RESIDENT_REGISTRATION_NUMBER, 
+                      p.RESIDENT_REGISTRATION_NUMBER,
                       p.SPECIAL_NOTE,
-                      p.PHYSICAL_INFO, 
-                      p.USER_ID, 
                       u.USER_NAME,
                       u.DEPARTMENT,
                       DATE_FORMAT(p.LAST_TREATMENT_DATE, '%Y-%m-%d') AS LAST_TREATMENT_DATE,
                       DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i') AS RESERVATION_DATE
-                      FROM patient p JOIN user u ON p.USER_ID = u.USER_ID;`;
-    connection.query( sql, function(err, rows){
-        if ( err ) throw err;
-        cb(rows);
+               FROM patient p JOIN user u ON p.USER_ID = u.USER_ID;`;
+    let User_Query = `SELECT USER_NAME, DEPARTMENT FROM user WHERE CATEGORY = 'DOCTOR';`;
+    //첫 번째 쿼리 실행
+    connection.query(Patient_Query, function(err, patientRows) {
+        if (err) throw err;
+
+        // 두 번째 쿼리 실행
+        connection.query(User_Query, function(err, userRows) {
+            if (err) throw err;
+            console.log('Patient Information:', patientRows);
+            console.log('User Information:', userRows);
+            cb({ patients: patientRows, users: userRows });
+        });
     });
 }
 exports.search_patient = (Search_Option, Search_Keyword, cb) => {
@@ -37,15 +44,14 @@ exports.search_patient = (Search_Option, Search_Keyword, cb) => {
                       u.USER_NAME,
                       u.DEPARTMENT,
                       DATE_FORMAT(p.LAST_TREATMENT_DATE, '%Y-%m-%d') AS LAST_TREATMENT_DATE,
-                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i')  AS RESERVATION_DATE 
-                      FROM patient p 
-                      JOIN user u ON p.USER_ID = u.USER_ID WHERE p.${Search_Option} LIKE '%${Search_Keyword}%';`;
+                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i')  AS RESERVATION_DATE
+               FROM patient p
+                        JOIN user u ON p.USER_ID = u.USER_ID WHERE p.${Search_Option} LIKE '%${Search_Keyword}%';`;
     connection.query( sql, function(err, rows){
         if ( err ) throw err;
         cb(rows);
     });
 }
-
 exports.delete_patient =(NAME, RESIDENT_REGISTRATION_NUMBER, cb) => {
     let sql = `DELETE FROM patient WHERE RESIDENT_REGISTRATION_NUMBER = ${RESIDENT_REGISTRATION_NUMBER};`;
     connection.query( sql, function(err, rows){
@@ -70,10 +76,10 @@ exports.add_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATION_NUM
         console.log(user_rows[0].USER_ID);
         let USER_ID = user_rows[0].USER_ID;
         let sql = `INSERT INTO patient (GENDER, AGE, ADDRESS, PHONE_NUMBER,
-                                        RESIDENT_REGISTRATION_NUMBER, SPECIAL_NOTE, 
-                    NAME,USER_ID)  VALUES
-                    (${GENDER},${AGE},'${ADDRESS}',${PHONE_NUMBER},${RESIDENT_REGISTRATION_NUMBER},'${SPECIAL_NOTE}',
-                     '${NAME}',${USER_ID});`;
+                                        RESIDENT_REGISTRATION_NUMBER, SPECIAL_NOTE,
+                                        NAME,USER_ID)  VALUES
+                       (${GENDER},${AGE},'${ADDRESS}',${PHONE_NUMBER},${RESIDENT_REGISTRATION_NUMBER},'${SPECIAL_NOTE}',
+                        '${NAME}',${USER_ID});`;
         connection.query(sql, function (err,rows){
             if(err){
                 console.error("환자 추가 중 에러 발생:", err);
@@ -115,7 +121,7 @@ exports.modified_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATIO
                     SPECIAL_NOTE = '${SPECIAL_NOTE}',
                     NAME         = '${NAME}',
                     USER_ID      = ${USER_ID},
-                    RESIDENT_REGISTRATION_NUMBER   = '${RESIDENT_REGISTRATION_NUMBER}'
+                    RESIDENT_REGISTRATION_NUMBER   = ${RESIDENT_REGISTRATION_NUMBER}
                 WHERE PATIENT_ID = ${PATIENT_ID};`;
             connection.query(sql, function (err, rows) {
                 if (err) {
