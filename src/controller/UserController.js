@@ -20,9 +20,9 @@ exports.signup = (req, res) => {
 //User 정보 저장하기
 exports.post_user = (req, res) => {
     console.log(req.body);
-    User.select(req.body.LOGIN_ID,req.body.PASSWORD, function (result) {
+    User.select_user_info(req.body.LOGIN_ID,req.body.PASSWORD, function (result) {
         if (result == null) {
-            User.insert(req.body, function (result) {
+            User.insert_user_info(req.body, function (result) {
                 return res.send({result: result, flag: true});
             })
         } else{
@@ -58,7 +58,7 @@ exports.logout = (req,res)=>{
 exports.post_login = (req, res) => {
     console.log(req.body);
     //LOGIN_ID와 PASSWORD를 User.js에 값을 넘겨준다.
-    User.select( req.body.LOGIN_ID, req.body.PASSWORD, function (result) {
+    User.select_user_info( req.body.LOGIN_ID, req.body.PASSWORD, function (result) {
         if (result == null) {
             //결과 값과 flag false 값을 넘겨준다.
             return res.send({result: result, flag: false});
@@ -105,8 +105,8 @@ exports.search_patient = (req,res) =>{
     })
 }
 //회원정보 수정 화면(개발 아직 안됨)
-exports.edit = (req, res) => {
-    User.get_user( req.body.id, function (result) {
+exports.edit_user_info = (req, res) => {
+    User.get_user_info( req.body.id, function (result) {
         res.render("edit", {data: result[0]});
     });
 }
