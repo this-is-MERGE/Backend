@@ -33,27 +33,35 @@ exports.search_all_patient = (cb) => {
     });
 }
 exports.search_patient = (Search_Option, Search_Keyword, cb) => {
-    let sql = `SELECT p.PATIENT_ID,
+    let Patient_Query = `SELECT p.PATIENT_ID,
                       p.GENDER,
                       p.AGE,
                       p.ADDRESS,
                       p.PHONE_NUMBER,
                       p.RESIDENT_REGISTRATION_NUMBER,
                       p.SPECIAL_NOTE,
-                      p.PHYSICAL_INFO,
                       u.USER_NAME,
                       u.DEPARTMENT,
                       DATE_FORMAT(p.LAST_TREATMENT_DATE, '%Y-%m-%d') AS LAST_TREATMENT_DATE,
                       DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i')  AS RESERVATION_DATE
                FROM patient p
                         JOIN user u ON p.USER_ID = u.USER_ID WHERE p.${Search_Option} LIKE '%${Search_Keyword}%';`;
-    connection.query( sql, function(err, rows){
-        if ( err ) throw err;
-        cb(rows);
+    let User_Query = `SELECT USER_NAME, DEPARTMENT FROM user WHERE CATEGORY = 'DOCTOR';`;
+    //첫 번째 쿼리 실행
+    connection.query(Patient_Query, function(err, patientRows) {
+        if (err) throw err;
+
+        // 두 번째 쿼리 실행
+        connection.query(User_Query, function(err, userRows) {
+            if (err) throw err;
+            console.log('Patient Information:', patientRows);
+            console.log('User Information:', userRows);
+            cb({ patients: patientRows, users: userRows });
+        });
     });
 }
-exports.delete_patient =(NAME, RESIDENT_REGISTRATION_NUMBER, cb) => {
-    let sql = `DELETE FROM patient WHERE RESIDENT_REGISTRATION_NUMBER = ${RESIDENT_REGISTRATION_NUMBER};`;
+exports.delete_patient =(PATIENT_ID, cb) => {
+    let sql = `DELETE FROM patient WHERE PATIENT_ID = ${PATIENT_ID};`;
     connection.query( sql, function(err, rows){
         if ( err ){
             console.error("환자 삭제 중 에러 발생:", err);
@@ -89,7 +97,7 @@ exports.add_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATION_NUM
         });
     });
 }
-exports.modified_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATION_NUMBER ,SPECIAL_NOTE,NAME,USER_NAME,DEPARTMENT, cb) => {
+exports.modify_patient = (PATIENT_ID,GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATION_NUMBER ,SPECIAL_NOTE,PATIENT_NAME,USER_NAME,DEPARTMENT, cb) => {
     let user_table = `SELECT USER_ID FROM user WHERE USER_NAME = '${USER_NAME}' AND DEPARTMENT = '${DEPARTMENT}'`;
     connection.query(user_table, function (err,user_rows){
         if(err){
@@ -101,35 +109,23 @@ exports.modified_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATIO
             return cb({error: "의사 정보 없음"});
         }
         let USER_ID = user_rows[0].USER_ID;
-        let patient_table = `SELECT PATIENT_ID FROM patient WHERE RESIDENT_REGISTRATION_NUMBER = ${RESIDENT_REGISTRATION_NUMBER}`;
-        connection.query(patient_table, function (err,patient_rows) {
+        let sql = `
+            UPDATE patient
+            SET GENDER       = ${GENDER},
+                AGE          = ${AGE},
+                ADDRESS      = '${ADDRESS}',
+                PHONE_NUMBER = ${PHONE_NUMBER},
+                SPECIAL_NOTE = '${SPECIAL_NOTE}',
+                NAME         = '${PATIENT_NAME}',
+                USER_ID      = ${USER_ID},
+                RESIDENT_REGISTRATION_NUMBER   = ${RESIDENT_REGISTRATION_NUMBER}
+            WHERE PATIENT_ID = ${PATIENT_ID};`;
+        connection.query(sql, function (err, rows) {
             if (err) {
-                console.error("환자 정보 조회 중 에러 발생", err);
-                return cb({err, patient_rows})
+                console.error("환자 수정 중 에러 발생:", err);
+                return cb({error: "환자 수정 중 에러 발생:"});
             }
-            if (patient_rows.length === 0) {
-                console.error("환자 정보 없음");
-                return cb({error: "환자 정보 없음"});
-            }
-            let PATIENT_ID = patient_rows[0].PATIENT_ID;
-            let sql = `
-                UPDATE patient
-                SET GENDER       = ${GENDER},
-                    AGE          = ${AGE},
-                    ADDRESS      = '${ADDRESS}',
-                    PHONE_NUMBER = ${PHONE_NUMBER},
-                    SPECIAL_NOTE = '${SPECIAL_NOTE}',
-                    NAME         = '${NAME}',
-                    USER_ID      = ${USER_ID},
-                    RESIDENT_REGISTRATION_NUMBER   = ${RESIDENT_REGISTRATION_NUMBER}
-                WHERE PATIENT_ID = ${PATIENT_ID};`;
-            connection.query(sql, function (err, rows) {
-                if (err) {
-                    console.error("환자 수정 중 에러 발생:", err);
-                    return cb({error: "환자 수정 중 에러 발생:"});
-                }
-                cb(rows);
-            });
+            cb(rows);
         });
     });
 }
