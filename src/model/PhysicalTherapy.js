@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const dbConfig = require("../../config/database.js");
 
 const connection = mysql.createConnection(dbConfig);
-exports.add_physical_info = (THERAPY_NAME,THERAPY_TYPE,PERFORMANCE_UNIT1,PERFORMANCE_UNIT2,cb) => {
+exports.add_physical_therapy_info = (THERAPY_NAME,THERAPY_TYPE,PERFORMANCE_UNIT1,PERFORMANCE_UNIT2,cb) => {
     let sql = `INSERT INTO therapy_code (NAME, THERAPY_TYPE, PERFORMANCE_UNIT1, PERFORMANCE_UNIT2)  VALUES
                    ('${THERAPY_NAME}','${THERAPY_TYPE}','${PERFORMANCE_UNIT1}','${PERFORMANCE_UNIT2}');`;
     connection.query(sql, function (err,rows){

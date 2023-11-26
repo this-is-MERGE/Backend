@@ -1,7 +1,7 @@
 const PhysicalTherapy = require("../model/PhysicalTherapy");
 
-exports.add_physical_info = (req,res) =>{
-    PhysicalTherapy.add_physical_info(req.body.THERAPY_NAME, req.body.THERAPY_TYPE,req.body.PERFORMANCE_UNIT1,
+exports.add_physical_therapy_info = (req,res) =>{
+    PhysicalTherapy.add_physical_therapy_info(req.body.THERAPY_NAME, req.body.THERAPY_TYPE,req.body.PERFORMANCE_UNIT1,
         req.body.PERFORMANCE_UNIT2,function(result){
         if(result == null){
             return res.send({result: result, flag: false});

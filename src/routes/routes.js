@@ -20,7 +20,7 @@ router.put("/patient/:PATIENT_ID",user.session_check,patient.modify_patient);
 router.post("/patient",user.session_check,patient.add_patient);
 //운동 치료 정보 수정창
 router.get("/physicaltherapy",user.session_check,physical_therapy.physical_therapy_info);
-router.post("/physicaltherapy",user.session_check,user.check_physical_therapist, physical_therapy.add_physical_info);
+router.post("/physicaltherapy",user.session_check,user.check_physical_therapist, physical_therapy.add_physical_therapy_info);
 router.put("/physicaltherapy/:THERAPY_CODE",user.session_check,user.check_physical_therapist, physical_therapy.modify_physical_therapy_info);
 router.delete("/physicaltherapy/:THERAPY_CODE",user.session_check,user.check_physical_therapist, physical_therapy.delete_physical_therapy_info);
 router.get("/logout",user.session_check, user.logout);
