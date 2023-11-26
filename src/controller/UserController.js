@@ -1,8 +1,7 @@
 const User = require("../model/User");
-const Console = require("console");
 exports.session_check = (req,res,next) =>{
     if(!req.session.user)
-        return res.redirect("/patient");
+        return res.redirect("/signin");
     else {
         console.log(req.session);
         next();
@@ -17,7 +16,14 @@ exports.already_login = (req,res,next) =>{
         return res.redirect('/patient');
     }
 }
-
+exports.check_physical_therapist = (req,res,next) =>{
+    if(req.session.category !== "Physical_Therapist") {
+        return res.redirect("/patient");
+    }
+    else {
+        next();
+    }
+}
 
 exports.startpage = (req,res) =>{
     res.render("초기화면");
@@ -72,6 +78,7 @@ exports.post_login = (req, res) => {
                 if(result.APPROVAL === 'Y'){
                     //세선 발급하는 과정. DB session 테이블에 생성된다.
                     req.session.user = result.LOGIN_ID;
+                    req.session.category = result.CATEGORY;
                     req.session.save(() => { // 세션 객체에 저장할 수 있는 express-session 메소드.
                         console.log(req.session);
                     })

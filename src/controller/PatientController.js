@@ -1,8 +1,10 @@
 
 const Patient = require("../model/Patient");
+
 exports.search_patient = (req,res) => {
     if (Object.keys(req.query).length === 0) {
         Patient.search_all_patient(function (result) {
+            //추후 render로 변경
             return res.send({result: result});
         })
     } else {
@@ -11,9 +13,11 @@ exports.search_patient = (req,res) => {
         Patient.search_patient(Search_Option, Search_Keyword, function (result) {
             if (result.length === 0) {
                 console.log("환자 검색 없음");
+                //추후 render로 변경
                 return res.send({result: result});
             }
             else{
+                //추후 render로 변경
                 return res.send({result: result});
             }
         })
