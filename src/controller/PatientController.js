@@ -4,8 +4,7 @@ const Patient = require("../model/Patient");
 exports.search_patient = (req,res) => {
     if (Object.keys(req.query).length === 0) {
         Patient.search_all_patient(function (result) {
-            //추후 render로 변경
-            return res.send({result: result});
+            return res.json({result: result});
         })
     } else {
         const Search_Option = Object.keys(req.query);
@@ -13,12 +12,10 @@ exports.search_patient = (req,res) => {
         Patient.search_patient(Search_Option, Search_Keyword, function (result) {
             if (result.length === 0) {
                 console.log("환자 검색 없음");
-                //추후 render로 변경
-                return res.send({result: result});
+                return res.json({result: result , Authorization : true});
             }
             else{
-                //추후 render로 변경
-                return res.send({result: result});
+                return res.json({result: result,Authorization : true});
             }
         })
     }
@@ -29,7 +26,7 @@ exports.delete_patient = (req,res) =>{
     Patient.delete_patient(req.params.PATIENT_ID, function (result){
         if(result.error != null){
             console.log(result);
-            return res.send({flag : false});
+            return res.json({flag : false, Authorization : true});
         }
         else{
             console.log("환자 삭제 성공");
@@ -44,7 +41,7 @@ exports.modify_patient = (req,res) =>{
         ,req.body.SPECIAL_NOTE,req.body.PATIENT_NAME,req.body.USER_NAME, req.body.DEPARTMENT,function (result) {
             if(result.error != null) {
                 console.log("환자 수정 실패");
-                return res.send({flag: false});
+                return res.json({flag: false,Authorization : true});
             }
             else {
                 console.log(result);

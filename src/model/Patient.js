@@ -7,6 +7,7 @@ const connection = mysql.createConnection(dbConfig);
 //전체 환자 목록 조회 데이터 콜백
 exports.search_all_patient = (cb) => {
     let Patient_Query = `SELECT p.PATIENT_ID,
+                      p.NAME,
                       p.GENDER,
                       p.AGE,
                       p.ADDRESS,
@@ -34,6 +35,7 @@ exports.search_all_patient = (cb) => {
 }
 exports.search_patient = (Search_Option, Search_Keyword, cb) => {
     let Patient_Query = `SELECT p.PATIENT_ID,
+                      p.NAME,
                       p.GENDER,
                       p.AGE,
                       p.ADDRESS,
