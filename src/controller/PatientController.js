@@ -4,7 +4,7 @@ const Patient = require("../model/Patient");
 exports.search_patient = (req,res) => {
     if (Object.keys(req.query).length === 0) {
         Patient.search_all_patient(function (result) {
-            return res.json({result: result});
+            return res.json(result);
         })
     } else {
         const Search_Option = Object.keys(req.query);
