@@ -14,8 +14,7 @@ exports.add_physical_therapy_info = (req,res) =>{
 }
 exports.physical_therapy_info = (req,res) => {
         PhysicalTherapy.physical_therapy_info(function (result) {
-            //추후 render로 변경 예정
-            return res.json({result: result});
+            return res.json(result);
         })
 }
 exports.modify_physical_therapy_info = (req,res) =>{
@@ -60,13 +59,13 @@ exports.patient_therapy_info = (req,res) =>{
 }
 
 exports.delete_patient_therapy_info = (req,res) =>{
-    PhysicalTherapy.delete_physical_therapy_info(req.params.PHYSICAL_DATA_ID, function (){
+    PhysicalTherapy.delete_physical_therapy_info(req.params.PHYSICAL_THERAPY_ID, function (){
         return res.redirect(`/patient/physicaltherapy/${req.params.PATIENT_ID}`);
     })
 }
 
 exports.patient_therapy_detail_info= (req,res) =>{
-    PhysicalTherapy.patient_therapy_detail_info(req.params.PHYSICAL_DATA_ID, function (result){
+    PhysicalTherapy.patient_therapy_detail_info(req.params.PHYSICAL_THERAPY_ID, function (result){
         if(result === null){
             return res.json({result : result, flag: false});
         }
@@ -75,8 +74,8 @@ exports.patient_therapy_detail_info= (req,res) =>{
 }
 
 exports.delete_patient_therapy_detail_info = (req,res) =>{
-    PhysicalTherapy.delete_patient_therapy_detail_info(req.params.PHYSICAL_DATA_ID, req.params.SET, function (){
-        PhysicalTherapy.patient_therapy_detail_info(req.params.PHYSICAL_DATA_ID, function (result){
+    PhysicalTherapy.delete_patient_therapy_detail_info(req.params.PHYSICAL_THERAPY_ID, req.params.SET, function (){
+        PhysicalTherapy.patient_therapy_detail_info(req.params.PHYSICAL_THERAPY_ID, function (result){
             return res.json({result : result});
         })
     })
@@ -98,11 +97,11 @@ exports.add_patient_therapy_info = (req, res) => {
                     return res.json({result: result});
                 }
                 else{
-                    let physicalDataId = result.insertId;
+                    let PHYSICAL_THERAPY_ID = result.insertId;
                     for(let i = 1; i<req.body.length; i++){
                         therapy = req.body[i];
                         PhysicalTherapy.add_patient_therapy_detail_info(
-                            physicalDataId,
+                            PHYSICAL_THERAPY_ID,
                             therapy.THERAPY_CODE,
                             therapy.PERFORMANCE1,
                             therapy.PERFORMANCE2,

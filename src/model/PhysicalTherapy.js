@@ -55,7 +55,7 @@ exports.delete_physical_therapy_info =(THERAPY_CODE, cb) => {
 
 exports.patient_therapy_info = (PATIENT_ID,cb) =>{
     let patient_therapy_data_Query = `
-        SELECT t.PHYSICAL_DATA_ID,
+        SELECT t.PHYSICAL_THERAPY_ID,
         c.NAME,
         c.THERAPY_TYPE,
         DATE_FORMAT(t.DATE, '%Y-%m-%d %H:%i')  AS THERAPY_DATE
@@ -71,9 +71,9 @@ exports.patient_therapy_info = (PATIENT_ID,cb) =>{
     });
 }
 
-exports.delete_physical_therapy_info = (PHYSICAL_DATA_ID, cb) =>{
+exports.delete_physical_therapy_info = (PHYSICAL_THERAPY_ID, cb) =>{
     let patient_therapy_data_Query = `
-    DELETE FROM therapy_data WHERE PHYSICAL_DATA_ID = ${PHYSICAL_DATA_ID};`;
+    DELETE FROM therapy_data WHERE PHYSICAL_THERAPY_ID = ${PHYSICAL_THERAPY_ID};`;
     connection.query( patient_therapy_data_Query, function(err, rows){
         if ( err ){
             console.error("환자 운동치료 삭제 중 에러 발생:", err);
@@ -82,10 +82,9 @@ exports.delete_physical_therapy_info = (PHYSICAL_DATA_ID, cb) =>{
         cb(rows);
     });
 }
-
-exports.patient_therapy_detail_info = (PHYSICAL_DATA_ID,cb) =>{
+exports.patient_therapy_detail_info = (PHYSICAL_THERAPY_ID,cb) =>{
     let patient_therapy_data_Query = `
-        SELECT t.PHYSICAL_DATA_ID,
+        SELECT t.PHYSICAL_THERAPY_ID,
         t.MEMO,
         c.NAME AS THERAPY_NAME,
         c.THERAPY_TYPE,
@@ -98,10 +97,10 @@ exports.patient_therapy_detail_info = (PHYSICAL_DATA_ID,cb) =>{
     FROM therapy_data t
     JOIN therapy_code c ON c.THERAPY_CODE = t.THERAPY_CODE
     JOIN user u on t.USER_ID = u.USER_ID
-    WHERE t.PHYSICAL_DATA_ID = ${PHYSICAL_DATA_ID};`;
+    WHERE t.PHYSICAL_THERAPY_ID = ${PHYSICAL_THERAPY_ID};`;
     let patient_therapy_data_info_Query = `
         SELECT * FROM therapy_data_info
-        WHERE PHYSICAL_DATA_ID = ${PHYSICAL_DATA_ID};`;
+        WHERE PHYSICAL_THERAPY_ID = ${PHYSICAL_THERAPY_ID};`;
     //첫 번째 쿼리 샐행
     connection.query(patient_therapy_data_Query, function(err, DataRows) {
         if (err) throw err;
@@ -115,11 +114,11 @@ exports.patient_therapy_detail_info = (PHYSICAL_DATA_ID,cb) =>{
     });
 }
 
-exports.delete_patient_therapy_detail_info = (PHYSICAL_DATA_ID, SET, cb) => {
+exports.delete_patient_therapy_detail_info = (PHYSICAL_THERAPY_ID, SET, cb) => {
     let patient_therapy_data_Query = `
         DELETE
         FROM therapy_data_info
-        WHERE PHYSICAL_DATA_ID = ${PHYSICAL_DATA_ID}
+        WHERE PHYSICAL_THERAPY_ID = ${PHYSICAL_THERAPY_ID}
           AND \`SET\` = ${SET};`;
     connection.query(patient_therapy_data_Query, function (err, DataInfoRows){
       if(err){
@@ -141,10 +140,10 @@ exports.add_patient_therapy_info = (DATE, MEMO, THERAPY_CODE, PATIENT_ID, USER_I
         cb(Data_InfoRows);
     })
 }
-exports.add_patient_therapy_detail_info = (PHYSICAL_DATA_ID,THERAPY_CODE,PERFORMANCE1,PERFORMANCE2,SET, REPS,RESULT,cb) => {
+exports.add_patient_therapy_detail_info = (PHYSICAL_THERAPY_ID,THERAPY_CODE,PERFORMANCE1,PERFORMANCE2,SET, REPS,RESULT,cb) => {
     let patient_therapy_data_Query = `
-        INSERT INTO therapy_data_info(PHYSICAL_DATA_ID,PERFORMANCE1, PERFORMANCE2, \`SET\`, REPS, RESULT)
-        VALUES (${PHYSICAL_DATA_ID},${PERFORMANCE1}, ${PERFORMANCE2}, ${SET}, ${REPS}, ${RESULT});`;
+        INSERT INTO therapy_data_info(PHYSICAL_THERAPY_ID,PERFORMANCE1, PERFORMANCE2, \`SET\`, REPS, RESULT)
+        VALUES (${PHYSICAL_THERAPY_ID},${PERFORMANCE1}, ${PERFORMANCE2}, ${SET}, ${REPS}, ${RESULT});`;
     connection.query(patient_therapy_data_Query,function (err, Data_InfoRows){
         if(err){
             return cb({error : "환자 세부 운동 치료 추가중 에러 발생"});

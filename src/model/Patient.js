@@ -7,7 +7,7 @@ const connection = mysql.createConnection(dbConfig);
 //전체 환자 목록 조회 데이터 콜백
 exports.search_all_patient = (cb) => {
     let Patient_Query = `SELECT p.PATIENT_ID,
-                      p.NAME,
+                      p.PATIENT_NAME,
                       p.GENDER,
                       p.AGE,
                       p.ADDRESS,
@@ -35,7 +35,7 @@ exports.search_all_patient = (cb) => {
 }
 exports.search_patient = (Search_Option, Search_Keyword, cb) => {
     let Patient_Query = `SELECT p.PATIENT_ID,
-                      p.NAME,
+                      p.PATIENT_NAME,
                       p.GENDER,
                       p.AGE,
                       p.ADDRESS,
@@ -87,8 +87,8 @@ exports.add_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATION_NUM
         let USER_ID = user_rows[0].USER_ID;
         let sql = `INSERT INTO patient (GENDER, AGE, ADDRESS, PHONE_NUMBER,
                                         RESIDENT_REGISTRATION_NUMBER, SPECIAL_NOTE,
-                                        NAME,USER_ID)  VALUES
-                       (${GENDER},${AGE},'${ADDRESS}',${PHONE_NUMBER},${RESIDENT_REGISTRATION_NUMBER},'${SPECIAL_NOTE}',
+                                        PATIENT_NAME,USER_ID)  VALUES
+                       ('${GENDER}',${AGE},'${ADDRESS}',${PHONE_NUMBER},${RESIDENT_REGISTRATION_NUMBER},'${SPECIAL_NOTE}',
                         '${NAME}',${USER_ID});`;
         connection.query(sql, function (err,rows){
             if(err){
@@ -113,12 +113,12 @@ exports.modify_patient = (PATIENT_ID,GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_RE
         let USER_ID = user_rows[0].USER_ID;
         let sql = `
             UPDATE patient
-            SET GENDER       = ${GENDER},
+            SET GENDER       = '${GENDER}',
                 AGE          = ${AGE},
                 ADDRESS      = '${ADDRESS}',
                 PHONE_NUMBER = ${PHONE_NUMBER},
                 SPECIAL_NOTE = '${SPECIAL_NOTE}',
-                NAME         = '${PATIENT_NAME}',
+                PATIENT_NAME = '${PATIENT_NAME}',
                 USER_ID      = ${USER_ID},
                 RESIDENT_REGISTRATION_NUMBER   = ${RESIDENT_REGISTRATION_NUMBER}
             WHERE PATIENT_ID = ${PATIENT_ID};`;
