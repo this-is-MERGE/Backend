@@ -14,8 +14,7 @@ exports.add_physical_therapy_info = (req,res) =>{
 }
 exports.physical_therapy_info = (req,res) => {
         PhysicalTherapy.physical_therapy_info(function (result) {
-            //추후 render로 변경 예정
-            return res.json({result: result});
+            return res.json(result);
         })
 }
 exports.modify_physical_therapy_info = (req,res) =>{
