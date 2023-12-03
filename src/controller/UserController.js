@@ -27,7 +27,6 @@ exports.check_doctor_nurse = (req,res,next) =>{
         next();
     }
 }
-
 exports.check_master = (req,res,next) => {
     if(!req.session.user_id)
         return res.json({session : false});
@@ -39,7 +38,6 @@ exports.check_master = (req,res,next) => {
     }
 
 }
-
 //User 정보 저장하기
 exports.post_user = (req, res) => {
     console.log(req.body);

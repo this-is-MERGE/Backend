@@ -82,7 +82,6 @@ exports.delete_physical_therapy_info = (PHYSICAL_THERAPY_ID, cb) =>{
         cb(rows);
     });
 }
-
 exports.patient_therapy_detail_info = (PHYSICAL_THERAPY_ID,cb) =>{
     let patient_therapy_data_Query = `
         SELECT t.PHYSICAL_THERAPY_ID,
