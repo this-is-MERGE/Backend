@@ -8,7 +8,7 @@ CREATE TABLE `USER` (
                         `EMAIL`	VARCHAR(50)	NOT NULL,
                         `CATEGORY`	VARCHAR(50)	NOT NULL,
                         `DEPARTMENT`	VARCHAR(50)	NOT NULL,
-                        `APPROVAL`	BOOLEAN	NOT NULL	DEFAULT FALSE,
+                        `APPROVAL`	VARCHAR(10)	NOT NULL	DEFAULT FALSE,
                         `SIGN_UP_TIME`	TIMESTAMP	NOT NULL
 );
 
@@ -17,6 +17,7 @@ CREATE TABLE `PATIENT` (
                            `USER_ID`	INT	NOT NULL,
                            `PATIENT_NAME`	VARCHAR(50)	NULL,
                            `GENDER`	VARCHAR(10)	NOT NULL,
+                           `AGE`	    INT	    NULL,
                            `ADDRESS`	VARCHAR(50)	NOT NULL,
                            `BIRTHDAY`	DATETIME	NULL,
                            `RESIDENT_REGISTRATION_NUMBER`	VARCHAR(30)	NOT NULL,
