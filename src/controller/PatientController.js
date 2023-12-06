@@ -26,11 +26,11 @@ exports.delete_patient = (req,res) =>{
     Patient.delete_patient(req.params.PATIENT_ID, function (result){
         if(result.error != null){
             console.log(result);
-            return res.json({flag : false, Authorization : true});
+            return res.json({flag : false,error:result.error});
         }
         else{
             console.log("환자 삭제 성공");
-            return res.redirect("/patient");
+            return res.json({flag: true});
         }
         //삭제후  /patient redirect
     })
@@ -39,15 +39,15 @@ exports.delete_patient = (req,res) =>{
 exports.modify_patient = (req,res) =>{
     Patient.modify_patient(req.params.PATIENT_ID,req.body.GENDER, req.body.AGE,req.body.ADDRESS,req.body.PHONE_NUMBER,req.body.RESIDENT_REGISTRATION_NUMBER
         ,req.body.SPECIAL_NOTE,req.body.PATIENT_NAME,req.body.USER_NAME, req.body.DEPARTMENT,function (result) {
-            if(result.error != null) {
+            if(result.error) {
                 console.log("환자 수정 실패");
-                return res.json({flag: false,Authorization : true});
+                return res.json({flag: false,error : result.error});
             }
             else {
                 console.log(result);
                 console.log("환자 수정 성공");
                 //수정후 /patient redirect
-                return res.redirect("/patient");
+                return res.json({flag: true});
             }
         })
 }
@@ -56,9 +56,11 @@ exports.add_patient = (req,res) =>{
     //환자의 성별, 나이, 주소, 휴대폰번호, 주민등록번호, 특이사항, 이름를 입력받는다.
     Patient.add_patient(req.body.GENDER, req.body.AGE, req.body.ADDRESS, req.body.PHONE_NUMBER, req.body.RESIDENT_REGISTRATION_NUMBER
         , req.body.SPECIAL_NOTE, req.body.PATIENT_NAME, req.body.USER_NAME, req.body.DEPARTMENT, function (result) {
-        console.log(result);
-        console.log("환자 추가 성공");
+        if(result.error){
+            console.log(result.error);
+            return res.json(result);
+        }
         //추가후 변경된 모든 환자 데이터 "/patient"로 redirect
-            return res.redirect("/patient");
+            return res.json({flag: true});
     })
 }

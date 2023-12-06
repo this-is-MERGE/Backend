@@ -24,9 +24,9 @@ router.put("/physicaltherapy/:THERAPY_CODE",user.check_physical_therapist, physi
 router.delete("/physicaltherapy/:THERAPY_CODE",user.check_physical_therapist, physical_therapy.delete_physical_therapy_info);
 //환자 운동치료 정보 창
 router.get("/patient/physicaltherapy/:PATIENT_ID",user.session_check,physical_therapy.patient_therapy_info);
-router.delete("/patient/physicaltherapy/:PATIENT_ID",user.check_physical_therapist,user.check_physical_therapist,physical_therapy.delete_patient_therapy_info);
-router.get("/patient/physicaltherapy/:PATIENT_ID/:PHYSICAL_DATA_ID",user.session_check,physical_therapy.patient_therapy_detail_info)
-router.delete("/patient/physicaltherapy/:PATIENT_ID/:PHYSICAL_DATA_ID/:SET",user.check_physical_therapist,physical_therapy.delete_patient_therapy_detail_info);
+router.delete("/patient/physicaltherapy/:PATIENT_ID/:PHYSICAL_THERAPY_ID",user.check_physical_therapist,physical_therapy.delete_patient_therapy_info);
+router.get("/patient/physicaltherapy/:PATIENT_ID/:PHYSICAL_THERAPY_ID",user.session_check,physical_therapy.patient_therapy_detail_info)
+router.delete("/patient/physicaltherapy/:PATIENT_ID/:PHYSICAL_THERAPY_ID/:SET",user.check_physical_therapist,physical_therapy.delete_patient_therapy_detail_info);
 router.post("/patient/physicaltherapy/:PATIENT_ID",user.check_physical_therapist,physical_therapy.add_patient_therapy_info);
 //마스터 병원 내부 DB 창
 router.get("/master/user",user.check_master,user.master_get_user_info);

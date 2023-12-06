@@ -69,6 +69,9 @@ exports.delete_patient =(PATIENT_ID, cb) => {
             console.error("환자 삭제 중 에러 발생:", err);
             return cb({ error: "환자 삭제 중 에러 발생" });
         }
+        if (rows.affectedRows === 0) {
+            return cb({ error: "해당하는 환자를 찾을 수 없습니다." });
+        }
         cb(rows);
     });
 }
@@ -88,13 +91,14 @@ exports.add_patient = (GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_REGISTRATION_NUM
         let sql = `INSERT INTO patient (GENDER, AGE, ADDRESS, PHONE_NUMBER,
                                         RESIDENT_REGISTRATION_NUMBER, SPECIAL_NOTE,
                                         PATIENT_NAME,USER_ID)  VALUES
-                       ('${GENDER}',${AGE},'${ADDRESS}',${PHONE_NUMBER},${RESIDENT_REGISTRATION_NUMBER},'${SPECIAL_NOTE}',
+                       ('${GENDER}',${AGE},'${ADDRESS}','${PHONE_NUMBER}','${RESIDENT_REGISTRATION_NUMBER}','${SPECIAL_NOTE}',
                         '${NAME}',${USER_ID});`;
         connection.query(sql, function (err,rows){
             if(err){
                 console.error("환자 추가 중 에러 발생:", err);
                 return cb({error : "환자 추가 중 에러 발생:" });
             }
+
             cb(rows);
         });
     });
@@ -126,6 +130,9 @@ exports.modify_patient = (PATIENT_ID,GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_RE
             if (err) {
                 console.error("환자 수정 중 에러 발생:", err);
                 return cb({error: "환자 수정 중 에러 발생:"});
+            }
+            if (rows.affectedRows === 0) {
+                return cb({ error: "해당하는 환자를 찾을 수 없습니다." });
             }
             cb(rows);
         });
