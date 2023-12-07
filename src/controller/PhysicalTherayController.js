@@ -111,7 +111,7 @@ exports.add_patient_therapy_info = (req, res) => {
                             therapy.PERFORMANCE2,
                             therapy.SET,
                             therapy.REPS,
-                            therapy.RESULT,
+                            therapy.STATUS,
                             function (result) {
                                 if(result.error){
                                     error = result.error;
