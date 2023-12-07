@@ -10,7 +10,7 @@ exports.session_check = (req,res,next) =>{
 exports.check_physical_therapist = (req,res,next) =>{
     if(!req.session.user_id)
         return res.json({session : false});
-    else if(req.session.category !== "Physical_Therapist"|| req.session.category !== "MASTER") {
+    else if(req.session.category !== "Physical_Therapist" && req.session.category !== "MASTER") {
         return res.json({session: true, Authorization : req.session.category});
     }
     else {
@@ -20,7 +20,7 @@ exports.check_physical_therapist = (req,res,next) =>{
 exports.check_doctor_nurse = (req,res,next) =>{
     if(!req.session.user_id)
         return res.json({session : false});
-    else if(req.session.category !== "DOCTOR" && req.session.category !== "NURSE"&& req.session.category !== "MASTER" ) {
+    else if(req.session.category !== "DOCTOR" && req.session.category !== "NURSE" && req.session.category !== "MASTER" ) {
         return res.json({session: true, Authorization : req.session.category});
     }
     else {
