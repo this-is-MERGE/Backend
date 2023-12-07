@@ -4,6 +4,7 @@ const express = require("express");
 const user = require("../controller/UserController");
 const patient = require("../controller/PatientController")
 const physical_therapy = require("../controller/PhysicalTherayController")
+const totalreport = require("../controller/TotalReportController")
 const router = express.Router();
 
 //로그인 창
@@ -35,6 +36,10 @@ router.delete("/master/user/:USER_ID",user.check_master, user.master_delete_user
 //마스터 사용자 등록 승인 창
 router.get("/master/approval",user.check_master,user.master_get_user_approval_info);
 router.post("/master/approval/:USER_ID",user.check_master,user.master_user_approve);
+//종합리포트
+router.get("/patient/totalreport/:PATIENT_ID",totalreport.get_Total_Report_Info);
+router.post("/patient/totalreport/:PATIENT_ID",totalreport.add_Total_Report_Info);
+router.delete("/patient/totalreport/:PATIENT_ID/:TOTAL_REPORT_ID",totalreport.delete_Total_Report_Info);
 //로그아웃
 router.get("/logout",user.session_check, user.logout);
 module.exports = router;

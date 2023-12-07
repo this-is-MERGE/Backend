@@ -138,3 +138,23 @@ exports.modify_patient = (PATIENT_ID,GENDER,AGE,ADDRESS,PHONE_NUMBER,RESIDENT_RE
         });
     });
 }
+exports.get_report_patient_info= (PATIENT_ID, cb) => {
+    let Patient_Query = `SELECT p.PATIENT_ID,
+                      p.PATIENT_NAME,
+                      p.GENDER,
+                      p.AGE,
+                      p.ADDRESS,
+                      p.PHONE_NUMBER,
+                      p.RESIDENT_REGISTRATION_NUMBER,
+                      p.SPECIAL_NOTE,
+                      u.USER_NAME,
+                      u.DEPARTMENT,
+                      DATE_FORMAT(p.LAST_TREATMENT_DATE, '%Y-%m-%d') AS LAST_TREATMENT_DATE,
+                      DATE_FORMAT(p.RESERVATION_DATE, '%Y-%m-%d %H:%i')  AS RESERVATION_DATE
+               FROM patient p
+                        JOIN user u ON p.USER_ID = u.USER_ID WHERE p.PATIENT_ID = '${PATIENT_ID}';`;
+    connection.query(Patient_Query, function(err, patientRows) {
+        if (err) return  ({error : "에러발생"});
+        cb(patientRows);
+    });
+}

@@ -162,10 +162,10 @@ exports.add_patient_therapy_info = (DATE, MEMO, THERAPY_CODE, PATIENT_ID, USER_I
         cb(Data_InfoRows);
     })
 }
-exports.add_patient_therapy_detail_info = (PHYSICAL_THERAPY_ID,THERAPY_CODE,PERFORMANCE1,PERFORMANCE2,SET, REPS,RESULT,cb) => {
+exports.add_patient_therapy_detail_info = (PHYSICAL_THERAPY_ID,THERAPY_CODE,PERFORMANCE1,PERFORMANCE2,SET, REPS,STATUS,cb) => {
     let patient_therapy_data_Query = `
-        INSERT INTO therapy_data_info(PHYSICAL_THERAPY_ID,PERFORMANCE1, PERFORMANCE2, \`SET\`, REPS, RESULT)
-        VALUES (${PHYSICAL_THERAPY_ID},${PERFORMANCE1}, ${PERFORMANCE2}, ${SET}, ${REPS}, ${RESULT});`;
+        INSERT INTO therapy_data_info(PHYSICAL_THERAPY_ID,PERFORMANCE1, PERFORMANCE2, \`SET\`, REPS, STATUS)
+        VALUES (${PHYSICAL_THERAPY_ID},${PERFORMANCE1}, ${PERFORMANCE2}, ${SET}, ${REPS}, ${STATUS});`;
     connection.query(patient_therapy_data_Query,function (err, Data_InfoRows){
         if(err){
             return cb({error : "환자 세부 운동 치료 추가중 에러 발생"});
