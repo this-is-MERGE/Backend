@@ -135,6 +135,7 @@ CREATE TABLE `THERAPY_DATA_INFO` (
                                      `SET`	INT	NULL,
                                      `REPS`	INT	NULL,
                                      `DURATION`	DATETIME	NULL,
+                                     `STATUS`	VARCHAR(1)	NULL,
                                      FOREIGN KEY (`PHYSICAL_THERAPY_ID`)
                                          REFERENCES `PHYSICAL_THERAPY` (`PHYSICAL_THERAPY_ID`)
                                          ON DELETE CASCADE
@@ -183,6 +184,7 @@ CREATE TABLE `session` (
 
 CREATE TABLE `IN_BODY` (
                            `EXAMINE_DATA_ID`	INT	NOT NULL PRIMARY KEY,
+                           `WEIGHT`	                DOUBLE	NULL,
                            `SKELETAL_MUSCLE_MASS`	DOUBLE	NULL,
                            `BODY_FAT_MASS`	DOUBLE	NULL,
                            `BMI`	DOUBLE	NULL,
