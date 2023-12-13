@@ -5,6 +5,7 @@ const user = require("../controller/UserController");
 const patient = require("../controller/PatientController")
 const physical_therapy = require("../controller/PhysicalTherayController")
 const totalreport = require("../controller/TotalReportController")
+const TestResultController = require('../controller/TestResultController');
 const router = express.Router();
 
 //로그인 창
@@ -42,4 +43,10 @@ router.post("/patient/totalreport/:PATIENT_ID",totalreport.add_Total_Report_Info
 router.delete("/patient/totalreport/:PATIENT_ID/:TOTAL_REPORT_ID",totalreport.delete_Total_Report_Info);
 //로그아웃
 router.get("/logout",user.session_check, user.logout);
+
+// 환자 검사 내역
+router.get('/examine-data/:userId', TestResultController.getExamineData);
+router.post('/examine-result',TestResultController.addExamineResult);
+router.post('/add-patient-test-result/:patientId', TestResultController.addPatientTestResult);
+
 module.exports = router;

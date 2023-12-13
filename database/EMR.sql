@@ -11,7 +11,6 @@ CREATE TABLE `USER` (
                         `APPROVAL`	VARCHAR(10)	NOT NULL	DEFAULT FALSE,
                         `SIGN_UP_TIME`	TIMESTAMP	NOT NULL
 );
-
 CREATE TABLE `PATIENT` (
                            `PATIENT_ID`	INT	NOT NULL AUTO_INCREMENT PRIMARY KEY,
                            `USER_ID`	INT	NOT NULL,
@@ -194,3 +193,7 @@ CREATE TABLE `IN_BODY` (
                                ON DELETE CASCADE
 );
 SET FOREIGN_KEY_CHECKS = 1;
+
+SELECT * FROM USER;
+SELECT * FROM CHART;
+SELECT * FROM EXAMINE_DATA;
