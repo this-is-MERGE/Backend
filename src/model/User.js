@@ -25,21 +25,11 @@ exports.insert = ( data, cb ) => {
 exports.select = (LOGIN_ID, PASSWORD, cb) => {
     var sql = `SELECT * FROM user WHERE LOGIN_ID='${LOGIN_ID}' limit 1`;
     connection.query(sql, (err, rows) => {
-        if (err) {
-            console.error('Error executing select query:', err);
-            cb(err);
-        } else {
-            if (rows.length > 0) {
-                console.log(rows[0]);
-                cb(rows[0]);
-            } else {
-                // 사용자를 찾지 못한 경우
-                cb(null);
-            }
-        }
+        console.log(rows[0]);
+        if ( err ) throw err;
+        cb( rows[0] );
     });
 }
-
 //회원 정보
 exports.get_user_info = (USER_ID, cb) => {
     let sql = `SELECT * FROM user WHERE USER_ID='${USER_ID}' limit 1;`;
