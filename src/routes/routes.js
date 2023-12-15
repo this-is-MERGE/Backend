@@ -7,7 +7,6 @@ const physical_therapy = require("../controller/PhysicalTherayController")
 const totalreport = require("../controller/TotalReportController")
 const TestResultController = require('../controller/TestResultController');
 const ChartController = require("../controller/ChartController");
-
 const router = express.Router();
 
 //로그인 창
