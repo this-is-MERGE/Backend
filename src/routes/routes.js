@@ -56,5 +56,7 @@ router.post("/chart/:chartId", user.session_check, ChartController.addPatientCha
 router.get("/chart/:chartId", user.session_check, ChartController.getPatientChart);
 router.put("/chart/:chartId", user.session_check, ChartController.updatePatientChart);
 router.delete("/chart/:chartId", user.session_check, ChartController.deletePatientChart);
+router.post("/chart/:chartId", user.session_check, ChartController.addPatientChart);
+ler.getPatientChart);router.get("/chart/:chartId", user.session_check, ChartControl
 
 module.exports = router;
