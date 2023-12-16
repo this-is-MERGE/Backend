@@ -50,13 +50,12 @@ router.get('/examine-data/:userId', TestResultController.getExamineData);
 router.post('/examine-result',TestResultController.addExamineResult);
 router.post('/add-patient-test-result/:patientId', TestResultController.addPatientTestResult);
 
-
 // 환자 차트
 router.post("/chart/:chartId", user.session_check, ChartController.addPatientChart);
 router.get("/chart/:chartId", user.session_check, ChartController.getPatientChart);
 router.put("/chart/:chartId", user.session_check, ChartController.updatePatientChart);
 router.delete("/chart/:chartId", user.session_check, ChartController.deletePatientChart);
 router.post("/chart/:chartId", user.session_check, ChartController.addPatientChart);
-router.get("/chart/:chartId", user.session_check, ChartController.getPatientChart);
+ler.getPatientChart);router.get("/chart/:chartId", user.session_check, ChartControl
 
 module.exports = router;
